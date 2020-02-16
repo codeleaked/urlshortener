@@ -23,8 +23,8 @@ public class GatewayConfiguration {
             @Override
             public Flux<List<ServiceInstance>> get() {
                 return Flux.just(Arrays
-                        .asList(new DefaultServiceInstance(SERVICE_ID + "1", SERVICE_ID, "localhost", 9001, false),
-                                new DefaultServiceInstance(SERVICE_ID + "2", SERVICE_ID, "localhost", 9002, false))
+                        .asList(new DefaultServiceInstance(SERVICE_ID + "1", SERVICE_ID, "backendhost1", 8080, false),
+                                new DefaultServiceInstance(SERVICE_ID + "2", SERVICE_ID, "backendhost2", 8080, false))
                 );
             }
 

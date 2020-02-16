@@ -4,22 +4,23 @@ import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Optional;
 
 @RestController
 @SpringBootApplication
 public class BackendApplication {
 
+    private static final String NOT_FOUND = "Not Found";
+
+    @Autowired
+    private UrlRepository repository;
+
     private static Logger log = LoggerFactory.getLogger(BackendApplication.class);
-
-    private static ConcurrentMap<String, String> idToUrl = new ConcurrentHashMap<>();
-
-    private static ConcurrentMap<String, String> urlToId = new ConcurrentHashMap<>();
 
     private static RandomStringGenerator idGenerator = new RandomStringGenerator.Builder()
             .withinRange('0', 'z')
@@ -33,9 +34,11 @@ public class BackendApplication {
     @PostMapping("/encode")
     public String encode(@RequestBody String url) {
         log.info("Encode {}", url);
+
         String id;
-        if (urlToId.containsKey(url)) {
-            id = urlToId.get(url);
+        Optional<UrlEntry> urlEntry = repository.findByUrl(url);
+        if (urlEntry.isPresent()) {
+            id = urlEntry.get().id;
         } else {
             id = generateUniqueId();
             saveUrl(id, url);
@@ -47,17 +50,21 @@ public class BackendApplication {
     @GetMapping("/decode/{id}")
     public String decode(@PathVariable String id) {
         log.info("Decode {}", id);
-        return idToUrl.getOrDefault(id, "Not Found");
+        Optional<UrlEntry> urlEntry = repository.findById(id);
+        if (urlEntry.isPresent()) {
+            return urlEntry.get().url;
+        } else {
+            return NOT_FOUND;
+        }
     }
 
     private void saveUrl(String id, String url) {
         log.info("Save id={}, url={}", id, url);
-        idToUrl.put(id, url);
-        urlToId.put(url, id);
+        repository.save(new UrlEntry(id, url));
     }
 
     private boolean isExistent(String id) {
-        return (id == null || idToUrl.containsKey(id));
+        return (id == null || repository.findById(id).isPresent());
     }
 
     private String generateUniqueId() {
