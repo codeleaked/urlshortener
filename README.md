@@ -6,7 +6,7 @@ Gateway works as a load balancer. It receives requests from network and send the
 2. **Backend**:
 Backend provides two APIs to take a long URL and squeeze it into an id, or take an id and return the URL which was shortened with this id.
 
-![Image description](architecture.png)
+![Image description](architecture_2.png)
 
 
 ### Installation
