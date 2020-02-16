@@ -1,15 +1,19 @@
 # URL shortener
-This application takes long URLs and squeezes them into 6 characters to make a link that is easier to share or type.
+This application takes long URLs and squeezes them into 6 characters to make a link that is easier to share or note down.
 It contains two modules:
-1. Gateway: 
+1. **Gateway**: 
 Gateway works as a load balancer. It receives requests from network and send them to the backend instances.
-2. Backend:
+2. **Backend**:
 Backend provides two APIs to take a long URL and squeeze it into an id, or take an id and return the URL which was shortened with this id.
 
 ### Installation
+Docker is required to run the application.
+
+The following command will run a MongoDB container, a Gateway container and two Backend containers.     
 ```
 ./install.sh
 ```
+The Gateway container should expose the port 9000.
 
 ### Usage
 
