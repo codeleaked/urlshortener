@@ -29,7 +29,8 @@ curl --location --request POST 'localhost:9000/shorten' \
 This command will return an id which is a string of 6 digits or letters (for example, 4KGGln).
 
 #### Retrieve an URL from an id
+The following command should return `http://codeleaked.com`.
 ```
 curl --request GET 'localhost:9000/retrieve/4KGGln'
 ```
-The above request should return `http://codeleaked.com`.
+Note: Replace `4KGGln` by the id you obtained from the _Shorten an URL_ section.
