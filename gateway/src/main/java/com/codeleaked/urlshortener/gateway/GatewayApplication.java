@@ -10,6 +10,8 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
 @SpringBootApplication
 @RestController
 public class GatewayApplication {
@@ -28,7 +30,10 @@ public class GatewayApplication {
 
     @PostMapping("/shorten")
     public Mono<String> shorten(@RequestBody String url) {
+        Objects.requireNonNull(url);
+
         log.info("Shorten {}", url);
+
         return WebClient.builder()
                 .filter(lbFunction)
                 .build()
@@ -39,7 +44,10 @@ public class GatewayApplication {
 
     @GetMapping("/retrieve/{id}")
     public Mono<String> retrieve(@PathVariable String id) {
+        Objects.requireNonNull(id);
+
         log.info("Retrieve {}", id);
+
         return WebClient.builder()
                 .filter(lbFunction)
                 .build()

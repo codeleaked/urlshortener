@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -33,6 +34,8 @@ public class BackendApplication {
 
     @PostMapping("/encode")
     public String encode(@RequestBody String url) {
+        Objects.requireNonNull(url);
+
         log.info("Encode {}", url);
 
         String id;
@@ -49,7 +52,10 @@ public class BackendApplication {
 
     @GetMapping("/decode/{id}")
     public String decode(@PathVariable String id) {
+        Objects.requireNonNull(id);
+
         log.info("Decode {}", id);
+
         Optional<UrlEntry> urlEntry = repository.findById(id);
         if (urlEntry.isPresent()) {
             return urlEntry.get().url;
@@ -59,11 +65,15 @@ public class BackendApplication {
     }
 
     private void saveUrl(String id, String url) {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(url);
+
         log.info("Save id={}, url={}", id, url);
         repository.save(new UrlEntry(id, url));
     }
 
     private boolean isExistent(String id) {
+        Objects.requireNonNull(id);
         return (id == null || repository.findById(id).isPresent());
     }
 
