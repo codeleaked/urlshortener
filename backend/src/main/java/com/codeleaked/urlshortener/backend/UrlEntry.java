@@ -3,7 +3,6 @@ package com.codeleaked.urlshortener.backend;
 import org.springframework.data.annotation.Id;
 
 public class UrlEntry {
-
     @Id
     public String id;
 
