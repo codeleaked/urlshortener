@@ -1,4 +1,4 @@
-#URL shortener
+# URL shortener
 This application takes long URLs and squeezes them into 6 characters to make a link that is easier to share or type.
 It contains two modules:
 1. Gateway: 
@@ -6,39 +6,23 @@ Gateway works as a load balancer. It receives requests from network and send the
 2. Backend:
 Backend provides two APIs to take a long URL and squeeze it into an id, or take an id and return the URL which was shortened with this id.
 
-####Compile and run unit tests
+### Installation
 ```
-mvn clean install
-```
-
-####Deploy the gateway on port 9000
-```
-cd gateway
-SERVER_PORT=9000 mvn spring-boot:run
+./install.sh
 ```
 
-####Deploy the first backend on port 9001
-```
-cd backend
-SERVER_PORT=9001 mvn spring-boot:run
-```
+### Usage
 
-####Deploy the second backend on port 9002
-```
-cd backend
-SERVER_PORT=9002 mvn spring-boot:run
-```
-
-####Service usage
-#####Shorten an URL
+#### Shorten an URL
 ```
 curl --location --request POST 'localhost:9000/shorten' \
 --header 'Content-Type: text/plain' \
---data-raw 'https://en.wikipedia.org/wiki/URL_shortening'
+--data-raw 'http://codeleaked.com'
 ```
 This command will return an id which is a string of 6 digits or letters (for example, 4KGGln).
 
-#####Retrieve an URL from an id
+#### Retrieve an URL from an id
 ```
 curl --request GET 'localhost:9000/retrieve/4KGGln'
 ```
+The above request should return `http://codeleaked.com`.
